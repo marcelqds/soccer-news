@@ -1,5 +1,7 @@
 package com.mqds.soccernews.adapter;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mqds.soccernews.databinding.NewsItemsBinding;
 import com.mqds.soccernews.domain.News;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -38,9 +41,20 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        News notice = this.news.get(position);
-        holder.newsItemsBinding.tvTitle.setText(notice.getTitle());
-        holder.newsItemsBinding.tvDescription.setText(notice.getDescription());
+        News news = this.news.get(position);
+        holder.newsItemsBinding.tvTitle.setText(news.getTitle());
+        holder.newsItemsBinding.tvDescription.setText(news.getDescription());
+        Picasso.get()
+                .load(news.getImage())
+                .centerCrop(20)
+                .fit()
+                .into(holder.newsItemsBinding.ivThumbnail);
+
+        holder.newsItemsBinding.btOpenLink.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(news.getLink()));
+            holder.itemView.getContext().startActivity(intent);
+        });
     }
 
     @Override

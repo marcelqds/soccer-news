@@ -4,25 +4,40 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.mqds.soccernews.data.remote.ISoccerNewsApi;
+import com.mqds.soccernews.data.remote.SoccerNewsApi;
 import com.mqds.soccernews.domain.News;
 
-public class NewsViewModel extends ViewModel {
+import java.util.List;
 
-    private final MutableLiveData<List<News>> mNews;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class NewsViewModel extends ViewModel {
+    ISoccerNewsApi api = SoccerNewsApi.getApi().create(ISoccerNewsApi.class);
+    private final MutableLiveData<List<News>> mNews = new MutableLiveData<>();
 
     public NewsViewModel() {
-        mNews = new MutableLiveData<>();
+        findNews();
+    }
 
-        //TODO Remover Mock de Notícias
-        List<News> listNews = new ArrayList<News>(){{
-            add(new News("Novas responsabilidades","Pia distribui liderança na Seleção com ausência da capitã Marta na Copa América"));
-            add(new News("Duas mudanças","Natascha e Duda Sampaio são chamadas para disputar a Copa América nas vagas de Letícia Izidoro e Gabi Nunes, cortadas por lesão"));
-            add(new News("Otimismo","Apesar de derrotas, Pia mantém confiança na seleção: \"Estaremos prontas para a Copa América"));
-            add(new News("Copa América x Euro","Conmebol e Uefa anunciam versão feminina da Finalíssima e Intercontinental Sub-20"));
-        }};
-        mNews.setValue(listNews);
+    private void findNews(){
+        api.getNews().enqueue(new Callback<List<News>>() {
+            @Override
+            public void onResponse(Call<List<News>> call, Response<List<News>> response) {
+                if(response.isSuccessful()){
+                    mNews.setValue(response.body());
+                }else{
+                    //TODO Pensar na estratégia de para os erros
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<News>> call, Throwable t) {
+                //TODO Pensar na estratégia de para os erros
+            }
+        });
     }
 
     public LiveData<List<News>> getNews() {

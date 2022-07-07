@@ -19,7 +19,7 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"/>
 
         <TextView
             android:id="@+id/tvTitle"
@@ -74,7 +74,12 @@
             app:layout_constraintEnd_toStartOf="@+id/ivShare"
             app:layout_constraintTop_toTopOf="@+id/btOpenLink"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_favorite_24" />
+            app:srcCompat="@drawable/ic_favorite_24"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            />
 
         <ImageView
             android:id="@+id/ivShare"
@@ -86,7 +91,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/ivFavorites"
             app:srcCompat="@drawable/ic_share_24"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
