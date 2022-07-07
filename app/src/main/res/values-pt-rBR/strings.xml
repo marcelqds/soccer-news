@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Soccer News</string>
+    <string name="title_news">News</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="ivShareAria">Imagem compartilhar</string>
+    <string name="ivFavoritesAria">Imagem favoritos</string>
+    <string name="ivThumbAria">Imagem news</string>
+    <string name="txtOpenLink">ABRIR LINK</string>
+</resources>
