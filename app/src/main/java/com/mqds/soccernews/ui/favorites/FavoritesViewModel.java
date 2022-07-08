@@ -11,6 +11,7 @@ public class FavoritesViewModel extends ViewModel {
     public FavoritesViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("Favorites");
+
     }
 
     public LiveData<String> getText() {
