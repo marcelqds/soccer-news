@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.news.NewsFragment"
     >
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srlNews"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvNews"
@@ -17,4 +26,5 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/news_items"
         />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

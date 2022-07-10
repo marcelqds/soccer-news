@@ -6,4 +6,5 @@
     <string name="ivFavoritesAria">Favorites image</string>
     <string name="ivThumbAria">News image</string>
     <string name="txtOpenLink">OPEN LINK</string>
+    <string name="error_network">Network error.</string>
 </resources>

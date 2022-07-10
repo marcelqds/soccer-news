@@ -7,4 +7,5 @@
     <string name="ivFavoritesAria">Imagem favoritos</string>
     <string name="ivThumbAria">Imagem news</string>
     <string name="txtOpenLink">ABRIR LINK</string>
+    <string name="error_network">Erro de conexão</string>
 </resources>

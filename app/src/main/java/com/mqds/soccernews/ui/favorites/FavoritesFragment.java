@@ -4,48 +4,54 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.mqds.soccernews.MainActivity;
+import com.mqds.soccernews.adapter.FavoritesAdapter;
+import com.mqds.soccernews.data.SoccerNewsRepository;
+import com.mqds.soccernews.ui.MainActivity;
 import com.mqds.soccernews.adapter.NewsAdapter;
 import com.mqds.soccernews.data.local.AppDatabase;
 import com.mqds.soccernews.databinding.FragmentFavoritesBinding;
 import com.mqds.soccernews.domain.News;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FavoritesFragment extends Fragment {
 
     private FragmentFavoritesBinding binding;
-    private AppDatabase db;
+    private FavoritesViewModel favoritesViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        FavoritesViewModel favoritesViewModel = new ViewModelProvider(this)
-        .get(FavoritesViewModel.class);
-        db = ((MainActivity) getActivity()).getDb();
+        favoritesViewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
         binding = FragmentFavoritesBinding.inflate(inflater, container, false);
 
+        View root = binding.getRoot();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        binding.rvFavorites.setLayoutManager(layoutManager);
+
         loadFavoritesNews();
-        return binding.getRoot();
+
+        return root;
     }
 
-    private  void loadFavoritesNews(){
-        List<News> favoritesNews = db.newsDao().findFavorites();
-        if(!favoritesNews.isEmpty()) {
-            binding.rvFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
-            binding.rvFavorites.setAdapter(new NewsAdapter(favoritesNews, updatedNews -> {
-                db.newsDao().save(updatedNews);
-                loadFavoritesNews();
-            }));
-        }
+    private void loadFavoritesNews(){
+        favoritesViewModel.loadFavoritesNews().observe(getViewLifecycleOwner(), localNews -> {
+            if(!localNews.isEmpty()) {
+                binding.rvFavorites.setAdapter(new NewsAdapter(localNews, updatedNews -> {
+                    favoritesViewModel.save(updatedNews);
+                    loadFavoritesNews();
+                }));
+            }
+        });
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

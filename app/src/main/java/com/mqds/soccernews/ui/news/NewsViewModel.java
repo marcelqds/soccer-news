@@ -1,11 +1,15 @@
 package com.mqds.soccernews.ui.news;
 
-import android.app.Application;
+import android.os.AsyncTask;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.room.Room;
 
+import com.mqds.soccernews.App;
+import com.mqds.soccernews.data.local.AppDatabase;
 import com.mqds.soccernews.data.remote.ISoccerNewsApi;
 import com.mqds.soccernews.data.remote.SoccerNewsApi;
 import com.mqds.soccernews.domain.News;
@@ -22,20 +26,21 @@ public class NewsViewModel extends ViewModel {
     }
 
     ISoccerNewsApi api = SoccerNewsApi.getApi().create(ISoccerNewsApi.class);
+    AppDatabase db = Room.databaseBuilder(App.getInstance(),AppDatabase.class,"soccer_news_db").build();
+
     private final MutableLiveData<List<News>> mNews = new MutableLiveData<>();
     private final MutableLiveData<State> state = new MutableLiveData<>();
 
-
     public NewsViewModel() {
-
         this.findNews();
     }
 
-    private void findNews(){
+    public void findNews(){
         state.setValue(State.DOING);
         api.getNews().enqueue(new Callback<List<News>>() {
+
             @Override
-            public void onResponse(Call<List<News>> call, Response<List<News>> response) {
+            public void onResponse(@NonNull Call<List<News>> call, @NonNull Response<List<News>> response) {
                 if(response.isSuccessful()){
                     mNews.setValue(response.body());
                     state.setValue(State.DONE);
@@ -45,11 +50,15 @@ public class NewsViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(Call<List<News>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<News>> call, Throwable error) {
+                error.printStackTrace();
                 state.setValue(State.ERROR);
-                t.printStackTrace();
             }
         });
+    }
+
+    public void save(News news){
+        AsyncTask.execute(() -> db.newsDao().save(news));
     }
 
     public LiveData<List<News>> getNews() {
