@@ -2,17 +2,13 @@ package com.mqds.soccernews.ui;
 
 import android.os.Bundle;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.room.Room;
 
 import com.mqds.soccernews.R;
-import com.mqds.soccernews.data.local.AppDatabase;
 import com.mqds.soccernews.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {

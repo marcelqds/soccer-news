@@ -7,48 +7,37 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.mqds.soccernews.adapter.FavoritesAdapter;
-import com.mqds.soccernews.data.SoccerNewsRepository;
-import com.mqds.soccernews.ui.MainActivity;
 import com.mqds.soccernews.adapter.NewsAdapter;
-import com.mqds.soccernews.data.local.AppDatabase;
 import com.mqds.soccernews.databinding.FragmentFavoritesBinding;
-import com.mqds.soccernews.domain.News;
-
-import java.util.List;
 
 public class FavoritesFragment extends Fragment {
 
     private FragmentFavoritesBinding binding;
     private FavoritesViewModel favoritesViewModel;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+        @NonNull LayoutInflater inflater,
+        ViewGroup container,
+        Bundle savedInstanceState)
+    {
         favoritesViewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
         binding = FragmentFavoritesBinding.inflate(inflater, container, false);
-
-        View root = binding.getRoot();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         binding.rvFavorites.setLayoutManager(layoutManager);
-
+        View root = binding.getRoot();
         loadFavoritesNews();
-
         return root;
     }
 
     private void loadFavoritesNews(){
         favoritesViewModel.loadFavoritesNews().observe(getViewLifecycleOwner(), localNews -> {
-            if(!localNews.isEmpty()) {
-                binding.rvFavorites.setAdapter(new NewsAdapter(localNews, updatedNews -> {
-                    favoritesViewModel.save(updatedNews);
-                    loadFavoritesNews();
-                }));
-            }
+            binding.rvFavorites.setAdapter(new NewsAdapter(localNews, updatedNews -> {
+                favoritesViewModel.save(updatedNews);
+                loadFavoritesNews();
+            }));
         });
     }
 

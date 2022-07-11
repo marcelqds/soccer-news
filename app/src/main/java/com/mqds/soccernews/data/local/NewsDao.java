@@ -2,7 +2,6 @@ package com.mqds.soccernews.data.local;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -17,11 +16,11 @@ public interface NewsDao {
     LiveData<List<News>> findFavorites();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void save(News... news);
+    void save(News news);
 
-    @Delete
-    void delete(News news);
+    @Query("Select * from news WHERE link like :link limit 1")
+    LiveData<News> findWithLink(String link);
 
-    @Query("DELETE from news")
+    @Query("Delete from news")
     void deleteAll();
 }

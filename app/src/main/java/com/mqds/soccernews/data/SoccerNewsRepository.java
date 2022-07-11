@@ -5,7 +5,6 @@ import androidx.room.Room;
 import com.mqds.soccernews.App;
 import com.mqds.soccernews.data.local.AppDatabase;
 import com.mqds.soccernews.data.remote.ISoccerNewsApi;
-import com.mqds.soccernews.data.remote.SoccerNewsApi;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -35,7 +34,6 @@ public class SoccerNewsRepository {
                         .create(ISoccerNewsApi.class);
 
                 localDb = Room.databaseBuilder(App.getInstance(), AppDatabase.class, LOCAL_DB_NAME)
-                        .allowMainThreadQueries()
                         .build();
         }
 

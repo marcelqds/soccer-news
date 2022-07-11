@@ -7,4 +7,5 @@
     <string name="ivThumbAria">News image</string>
     <string name="txtOpenLink">OPEN LINK</string>
     <string name="error_network">Network error.</string>
+    <string name="intentShare">Share</string>
 </resources>

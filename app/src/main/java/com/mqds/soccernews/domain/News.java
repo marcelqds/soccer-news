@@ -1,22 +1,20 @@
 package com.mqds.soccernews.domain;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
-@Entity
+
+@Entity(primaryKeys = {"title","link"})
 public class News {
-    @PrimaryKey
-    private int id;
+
+    @NonNull
     private String title;
+    @NonNull
     private String description;
     private String image;
+    @NonNull
     private String link;
     private boolean favorite;
-
-    public News(String title, String description) {
-        this.title = title;
-        this.description = description;
-    }
 
     public String getTitle() {
         return title;
@@ -50,14 +48,6 @@ public class News {
         this.link = link;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public boolean isFavorite() {
         return favorite;
     }
@@ -68,6 +58,6 @@ public class News {
 
     @Override
     public String toString() {
-        return  title + "\n\n" + description +"\n"+link;
+        return   " | " +title + " | " +favorite+ " |\n ";
     }
 }

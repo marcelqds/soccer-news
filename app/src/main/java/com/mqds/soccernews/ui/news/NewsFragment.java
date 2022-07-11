@@ -22,10 +22,11 @@ public class NewsFragment extends Fragment {
 
     public View onCreateView(
             @NonNull LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState
+            ViewGroup container,
+            Bundle savedInstanceState
     ){
-
         newsViewModel = new ViewModelProvider(this).get(NewsViewModel.class);
+        newsViewModel.loadLocalNews();
         binding = FragmentNewsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -37,8 +38,7 @@ public class NewsFragment extends Fragment {
         setupStates();
 
         binding.srlNews.setOnRefreshListener(() -> {
-            observeNews();
-            binding.srlNews.setRefreshing(false);
+            newsViewModel.findNews();
         });
 
         return root;
@@ -53,7 +53,7 @@ public class NewsFragment extends Fragment {
     }
 
     private void setupStates(){
-        newsViewModel.getState().observe(getViewLifecycleOwner(),state -> {
+        newsViewModel.getState().observe(getViewLifecycleOwner(), state -> {
             switch (state){
                 case DOING:
                     binding.srlNews.setRefreshing(true);
@@ -64,7 +64,6 @@ public class NewsFragment extends Fragment {
                 case ERROR:
                     binding.srlNews.setRefreshing(false);
                     Snackbar.make(binding.srlNews, R.string.error_network,Snackbar.LENGTH_SHORT).show();
-                    break;
             }
         });
     }
@@ -75,6 +74,6 @@ public class NewsFragment extends Fragment {
         binding = null;
     }
 }
-//Hilt/Dagger -> Injeção de dependência
 
+//Hilt/Dagger -> Injeção de dependência
 //SOLID -> Single Responsibility / Open & Close / Liskov Substitution / Interface Template / Dependency Inversion
